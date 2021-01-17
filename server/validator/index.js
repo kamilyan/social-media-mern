@@ -13,7 +13,7 @@ exports.createPostValidator = [
     // check for errors
     const errorsValidation = validationResult(req)
     // if error show the first one as they happen
-    if (errorsValidation.errors.length) {
+    if (errorsValidation.isEmpty()) {
       return res.status(400).json({ error: errorsValidation.errors[0].msg })
     }
     next()
