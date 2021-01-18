@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
+import { signin, authenticate } from '../auth'
 
 class Signin extends Component {
   constructor() {
@@ -18,43 +19,21 @@ class Signin extends Component {
     this.setState({ [name]: e.target.value })
   }
 
-  authenticate = (jwt, next) => {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('jwt', JSON.stringify(jwt))
-      next()
-    }
-  }
-
   handleSubmit = (e) => {
     e.preventDefault()
     this.setState({ loading: true })
     const { email, password } = this.state
     const user = { email, password }
 
-    this.signin(user).then((data) => {
+    signin(user).then((data) => {
       if (data.error) {
         this.setState({ error: data.error, loading: false })
       } else {
-        this.authenticate(data, () => {
+        authenticate(data, () => {
           this.setState({ success: true })
         })
       }
     })
-  }
-
-  signin = (user) => {
-    return fetch('http://localhost:8080/api/signin', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(user),
-    })
-      .then((res) => {
-        return res.json()
-      })
-      .catch((err) => console.error(err))
   }
 
   render() {

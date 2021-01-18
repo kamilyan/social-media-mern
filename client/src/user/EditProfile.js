@@ -1,16 +1,33 @@
 import React, { Component } from 'react'
-import { signup } from '../auth'
-import { Link } from 'react-router-dom'
-class Signup extends Component {
+import { isAuthenticated } from '../auth'
+import { getUserProfile, updateUser } from './apiUser'
+import { Redirect } from 'react-router-dom'
+
+class EditProfile extends Component {
   constructor() {
     super()
     this.state = {
+      id: '',
       name: '',
       email: '',
       password: '',
-      error: '',
-      success: false,
+      redirectToProfile: false,
     }
+  }
+  init = (userId) => {
+    const token = isAuthenticated().token
+    getUserProfile(userId, token).then((data) => {
+      if (data.error) {
+        this.setState({ redirectToSignin: true })
+      } else {
+        this.setState({ id: data._id, name: data.name, email: data.email })
+      }
+    })
+  }
+
+  componentDidMount() {
+    const userId = this.props.match.params.userId
+    this.init(userId)
   }
 
   handleChange = (name) => (e) => {
@@ -20,37 +37,30 @@ class Signup extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault()
-    const { name, email, password } = this.state
-    const user = { name, email, password }
-
-    signup(user).then((data) => {
+    const { name, email, password, id } = this.state
+    const user = { name, email, password: password || undefined, id }
+    const token = isAuthenticated().token
+    updateUser(user, token).then((data) => {
       if (data.error) {
         this.setState({ error: data.error })
       } else {
         this.setState({
-          error: '',
-          name: '',
-          email: '',
-          password: '',
-          success: true,
+          redirectToSignin: true
         })
       }
     })
+   
   }
 
   render() {
-    const { name, email, password, error, success } = this.state
+    const { id, name, email, password, redirectToProfile } = this.state
+
+    if (redirectToProfile) {
+      return <Redirect to={`/users/${id}`} />
+    }
     return (
       <div className='container'>
-        <h2 className='mt-5 mb-5'>Signup</h2>
-
-        {error && <div className='alert alert-danger'>{error}</div>}
-        {success && (
-          <div className='alert alert-info'>
-            New Account is created! Please <Link to='/signin'>Sign in</Link>
-          </div>
-        )}
-
+        <h2 className='mt-5 mb-5'>Edit Profile</h2>
         <form>
           <div className='form-group'>
             <label className='text-muted'>Name</label>
@@ -82,7 +92,7 @@ class Signup extends Component {
           <button
             onClick={this.handleSubmit}
             className='btn btn-raised btn-primary'>
-            Submit
+            Update
           </button>
         </form>
       </div>
@@ -90,4 +100,4 @@ class Signup extends Component {
   }
 }
 
-export default Signup
+export default EditProfile
