@@ -11,17 +11,24 @@ export const getUserProfile = (userId, token) => {
     .catch((err) => console.error(err))
 }
 
-export const updateUser = (user, token) => {
-  return fetch(`${process.env.REACT_APP_API_URL}/api/users/${user.id}`, {
+export const updateUser = (userId, token, user, name) => {
+  return fetch(`${process.env.REACT_APP_API_URL}/api/users/${userId}`, {
     method: 'PUT',
     headers: {
       Accept: 'application/json',
-      'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify(user),
+    body: user,
   })
-    .then((res) => res.json())
+    .then((res) => {
+      //update user in localstorage.
+      if (typeof window !== 'undefined') {
+        let auth = JSON.parse(localStorage.getItem('jwt'))
+        auth.user.name = name
+        localStorage.setItem('jwt', JSON.stringify(auth))
+      }
+      return res.json()
+    })
     .catch((err) => console.error(err))
 }
 

@@ -5,6 +5,21 @@ const authController = require('../controllers/auth')
 const router = express.Router()
 
 router.get('/', userController.allUsers)
+router.get('/:userId/photo', userController.getUserPhoto)
+router.put(
+  '/user/follow',
+  authController.requireSignin,
+  userController.addFollowing,
+  userController.addFollower
+)
+
+router.put(
+  '/user/unfollow',
+  authController.requireSignin,
+  userController.removeFollowing,
+  userController.removeFollower
+)
+
 router.get('/:userId', authController.requireSignin, userController.getUser)
 router.put('/:userId', authController.requireSignin, userController.updateUser)
 router.delete(
