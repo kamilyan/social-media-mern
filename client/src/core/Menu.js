@@ -59,6 +59,14 @@ const Menu = ({ history }) => {
             </li>
             <li className='nav-item'>
               <Link
+                to={'/suggestedUsers'}
+                style={isActive(history, '/suggestedUser')}
+                className='nav-link'>
+                Suggested Accounts
+              </Link>
+            </li>
+            <li className='nav-item'>
+              <Link
                 to={`/users/${isAuthenticated().user._id}`}
                 style={isActive(
                   history,

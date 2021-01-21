@@ -5,16 +5,17 @@ const authController = require('../controllers/auth')
 const router = express.Router()
 
 router.get('/', userController.allUsers)
+
 router.get('/:userId/photo', userController.getUserPhoto)
 router.put(
-  '/user/follow',
+  '/:followId/follow',
   authController.requireSignin,
   userController.addFollowing,
   userController.addFollower
 )
 
 router.put(
-  '/user/unfollow',
+  '/:unfollowId/unfollow',
   authController.requireSignin,
   userController.removeFollowing,
   userController.removeFollower
@@ -26,6 +27,13 @@ router.delete(
   '/:userId',
   authController.requireSignin,
   userController.deleteUser
+)
+
+router.get(
+  '/:userId/suggestedUsers',
+  authController.requireSignin,
+  userController.hasAuthorization,
+  userController.suggestedUsers
 )
 
 // any route containing : userId, our app will first execute userById

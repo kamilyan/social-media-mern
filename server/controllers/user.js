@@ -19,12 +19,13 @@ exports.userById = (req, res, next, id) => {
 }
 
 exports.hasAuthorization = (req, res, next) => {
-  const authorized = req.profile && req.auth && req.profile._id === req.auth._id
+  const authorized = req.profile && req.auth && req.profile._id == req.auth._id
   if (!authorized) {
     return res.status(403).json({
       error: 'User is not authorized',
     })
   }
+  next()
 }
 
 exports.allUsers = (req, res) => {
@@ -117,9 +118,9 @@ exports.deleteUser = (req, res, next) => {
 
 exports.addFollowing = (req, res, next) => {
   User.findByIdAndUpdate(
-    req.body.userId,
+    req.auth._id,
     {
-      $push: { following: req.body.followId },
+      $push: { following: req.params.followId },
     },
     (err, result) => {
       if (err) {
@@ -132,9 +133,9 @@ exports.addFollowing = (req, res, next) => {
 
 exports.addFollower = (req, res) => {
   User.findByIdAndUpdate(
-    req.body.followId,
+    req.params.followId,
     {
-      $push: { followers: req.body.userId },
+      $push: { followers: req.auth._id },
     },
     { new: true }
   )
@@ -152,9 +153,9 @@ exports.addFollower = (req, res) => {
 
 exports.removeFollowing = (req, res, next) => {
   User.findByIdAndUpdate(
-    req.body.userId,
+    req.auth._id,
     {
-      $pull: { following: req.body.unfollowId },
+      $pull: { following: req.params.unfollowId },
     },
     (err, result) => {
       if (err) {
@@ -167,9 +168,9 @@ exports.removeFollowing = (req, res, next) => {
 
 exports.removeFollower = (req, res) => {
   User.findByIdAndUpdate(
-    req.body.unfollowId,
+    req.params.unfollowId,
     {
-      $pull: { followers: req.body.userId },
+      $pull: { followers: req.auth._id },
     },
     { new: true }
   )
@@ -183,4 +184,16 @@ exports.removeFollower = (req, res) => {
       result.salt = undefined
       res.json(result)
     })
+}
+
+exports.suggestedUsers = (req, res) => {
+  let following = req.profile.following
+  User.find({ _id: { $nin: [...following, req.profile_id] } }, (err, users) => {
+    if (err) {
+      return res.status(400).json({
+        error: err,
+      })
+    }
+    res.json(users)
+  }).select('name')
 }

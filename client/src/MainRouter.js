@@ -7,6 +7,7 @@ import Signin from './user/Signin'
 import Profile from './user/Profile'
 import Users from './user/Users'
 import EditProfile from './user/EditProfile'
+import SuggestedUsers from './user/SuggestedUsers'
 import PrivateRoute from './auth/PrivateRoute'
 
 const MainRouter = () => {
@@ -23,6 +24,7 @@ const MainRouter = () => {
           path='/users/:userId/edit'
           component={EditProfile}
         />
+        <PrivateRoute exact path='/suggestedUsers' component={SuggestedUsers} />
         <PrivateRoute exact path='/users/:userId' component={Profile} />
       </Switch>
     </div>

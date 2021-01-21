@@ -52,3 +52,54 @@ export const getUsers = () => {
     .then((res) => res.json())
     .catch((err) => console.error(err))
 }
+
+export const follow = (token, followId) => {
+  return fetch(
+    `${process.env.REACT_APP_API_URL}/api/users/${followId}/follow`,
+    {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  )
+    .then((res) => {
+      return res.json()
+    })
+    .catch((err) => console.error(err))
+}
+
+export const unfollow = (token, unfollowId) => {
+  return fetch(
+    `${process.env.REACT_APP_API_URL}/api/users/${unfollowId}/unfollow`,
+    {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  )
+    .then((res) => {
+      return res.json()
+    })
+    .catch((err) => console.error(err))
+}
+
+export const suggestedUsers = (userId, token) => {
+  return fetch(
+    `${process.env.REACT_APP_API_URL}/api/users/${userId}/suggestedUsers`,
+    {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  )
+    .then((res) => {
+      return res.json()
+    })
+    .catch((err) => console.error(err))
+}
