@@ -22,9 +22,10 @@ const postSchema = new mongoose.Schema({
     type: ObjectId,
     ref: 'User',
   },
+  update: Date,
   created: {
     type: Date,
-    default: Date.Now,
+    default: Date.now,
   },
 })
 

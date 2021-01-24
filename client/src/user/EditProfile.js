@@ -106,6 +106,7 @@ class EditProfile extends Component {
       loading,
       about,
     } = this.state
+    
     if (redirectToProfile) {
       return <Redirect to={`/users/${id}`} />
     }

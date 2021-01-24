@@ -20,9 +20,10 @@ exports.postById = (req, res, next, id) => {
 exports.getPosts = (req, res) => {
   Post.find()
     .populate('postedBy', '_id name')
-    .select('_id title body')
+    .select('_id title body created')
+    .sort({ created: -1 })
     .then((posts) => {
-      res.status(200).json({ posts: posts })
+      res.status(200).json(posts)
     })
     .catch((err) => console.error(err))
 }
@@ -58,14 +59,14 @@ exports.createPost = (req, res, next) => {
 exports.postsByUser = (req, res) => {
   Post.find({ postedBy: req.profile._id })
     .populate('postedBy', '_id name')
-    .sort('_created')
+    .sort({ created: -1 })
     .exec((err, posts) => {
       if (err) {
         return res.status(400).json({
           error: err,
         })
       }
-      res.json({ posts })
+      res.json(posts)
     })
 }
 
@@ -80,17 +81,34 @@ exports.isPoster = (req, res, next) => {
   next()
 }
 
-exports.updatePost = (req, res) => {
-  let post = req.post
-  post = _.extend(post, req.body)
-  post.updated = Date.now()
-  post.save((err) => {
+exports.updatePost = (req, res, next) => {
+  let form = new formidable.IncomingForm()
+
+  form.keepExtensions = true
+
+  form.parse(req, (err, fields, files) => {
     if (err) {
       return res.status(400).json({
-        error: err,
+        error: 'Photo could not be uploaded',
       })
     }
-    res.json(post)
+
+    let post = req.post
+    post = _.extend(post, fields)
+    post.updated = Date.now()
+    if (files.photo) {
+      post.photo.data = fs.readFileSync(files.photo.path)
+      post.photo.contentType = files.photo.type
+    }
+    post.save((err, result) => {
+      if (err) {
+        return res.status(400).json({
+          error: err,
+        })
+      }
+
+      res.json(result)
+    })
   })
 }
 
@@ -106,4 +124,13 @@ exports.deletePost = (req, res) => {
       message: 'Post deleted!',
     })
   })
+}
+
+exports.getPostPhoto = (req, res, next) => {
+  res.set('Content-Type', req.post.photo.contentType)
+  return res.send(req.post.photo.data)
+}
+
+exports.getPostById = (req, res, next) => {
+  return res.json(req.post)
 }

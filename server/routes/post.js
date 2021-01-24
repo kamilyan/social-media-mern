@@ -7,6 +7,9 @@ const validator = require('../validator')
 const router = express.Router()
 
 router.get('/', postController.getPosts)
+router.get('/:postId', postController.getPostById)
+router.get('/:postId/photo', postController.getPostPhoto)
+
 router.post(
   '/users/:userId',
   requireSignin,

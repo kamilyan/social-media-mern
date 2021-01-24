@@ -8,6 +8,9 @@ import Profile from './user/Profile'
 import Users from './user/Users'
 import EditProfile from './user/EditProfile'
 import SuggestedUsers from './user/SuggestedUsers'
+import CreatePost from './post/CreatePost'
+import SinglePost from './post/SinglePost'
+import EditPost from './post/EditPost'
 import PrivateRoute from './auth/PrivateRoute'
 
 const MainRouter = () => {
@@ -16,6 +19,8 @@ const MainRouter = () => {
       <Menu />
       <Switch>
         <Route exact path='/' component={Home} />
+        <Route exact path='/posts/:postId' component={SinglePost} />
+        <PrivateRoute exact path='/posts/:postId/edit' component={EditPost} />
         <Route exact path='/users' component={Users} />
         <Route exact path='/signup' component={Signup} />
         <Route exact path='/signin' component={Signin} />
@@ -26,6 +31,7 @@ const MainRouter = () => {
         />
         <PrivateRoute exact path='/suggestedUsers' component={SuggestedUsers} />
         <PrivateRoute exact path='/users/:userId' component={Profile} />
+        <PrivateRoute exact path='/createPost' component={CreatePost} />
       </Switch>
     </div>
   )

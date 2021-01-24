@@ -50,19 +50,19 @@ const Menu = ({ history }) => {
         ) : (
           <>
             <li className='nav-item'>
-              <span
-                style={{ cursor: 'pointer', color: '#fff' }}
-                className='nav-link'
-                onClick={() => signout(() => history.push('/'))}>
-                Sign Out
-              </span>
-            </li>
-            <li className='nav-item'>
               <Link
                 to={'/suggestedUsers'}
                 style={isActive(history, '/suggestedUser')}
                 className='nav-link'>
                 Suggested Accounts
+              </Link>
+            </li>
+            <li className='nav-item'>
+              <Link
+                to={'/createPost'}
+                style={isActive(history, '/createPost')}
+                className='nav-link'>
+                Create Post
               </Link>
             </li>
             <li className='nav-item'>
@@ -75,6 +75,14 @@ const Menu = ({ history }) => {
                 className='nav-link'>
                 {`${isAuthenticated().user.name}'s profile`}
               </Link>
+            </li>
+            <li className='nav-item'>
+              <span
+                style={{ cursor: 'pointer', color: '#fff' }}
+                className='nav-link'
+                onClick={() => signout(() => history.push('/'))}>
+                Sign Out
+              </span>
             </li>
           </>
         )}
