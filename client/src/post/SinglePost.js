@@ -3,6 +3,7 @@ import { getPostById, removePost, performLike, performUnlike } from './apiPost'
 import DefaultPost from '../images/nature.jpg'
 import { Link, Redirect } from 'react-router-dom'
 import { isAuthenticated } from '../auth'
+import Comment from './Comment'
 
 class SinglePost extends Component {
   state = {
@@ -12,6 +13,7 @@ class SinglePost extends Component {
     like: false,
     likes: 0,
     successLike: false,
+    comments: [],
   }
 
   componentDidMount() {
@@ -53,6 +55,10 @@ class SinglePost extends Component {
     const userId = isAuthenticated() && isAuthenticated().user._id
     let found = likes.indexOf(userId) !== -1
     return found
+  }
+
+  updateComments = (comments) => {
+    this.setState({ comments })
   }
 
   likeToggleHandler = () => {
@@ -119,6 +125,7 @@ class SinglePost extends Component {
           <Link to={`/`} className='btn btn-raised btn-sm btn-primary mr-5'>
             Back to posts
           </Link>
+          {console.log(post)}
           {isAuthenticated().user &&
             isAuthenticated().user._id === post.postedBy._id && (
               <>
@@ -142,7 +149,7 @@ class SinglePost extends Component {
   }
 
   render() {
-    const { post, loading, successDeleted, successLike } = this.state
+    const { post, loading, successDeleted, successLike, comments } = this.state
 
     if (successDeleted) {
       return <Redirect to={'/'} />
@@ -160,6 +167,12 @@ class SinglePost extends Component {
         ) : (
           this.renderPost(post)
         )}
+
+        <Comment
+          postId={post._id}
+          comments={comments}
+          onUpdateComments={this.updateComments}
+        />
       </div>
     )
   }

@@ -96,3 +96,37 @@ export const performUnlike = (postId, token) => {
     })
     .catch((err) => console.error(err))
 }
+
+export const performComment = (postId, token, comment) => {
+  return fetch(`${process.env.REACT_APP_API_URL}/api/posts/${postId}/comment`, {
+    method: 'PUT',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ comment }),
+  })
+    .then((res) => {
+      return res.json()
+    })
+    .catch((err) => console.error(err))
+}
+
+export const performUncomment = (postId, token, comment) => {
+  return fetch(
+    `${process.env.REACT_APP_API_URL}/api/posts/${postId}/uncomment`,
+    {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ comment }),
+    }
+  )
+    .then((res) => {
+      return res.json()
+    })
+    .catch((err) => console.error(err))
+}

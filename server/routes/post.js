@@ -36,6 +36,9 @@ router.delete(
 router.put('/:postId/like', requireSignin, postController.performLike)
 router.put('/:postId/unlike', requireSignin, postController.performUnlike)
 
+router.put('/:postId/comment', requireSignin, postController.performComment)
+router.put('/:postId/uncomment', requireSignin, postController.performUncomment)
+
 // any route containing : userId, our app will first execute userById
 router.param('userId', userController.userById)
 router.param('postId', postController.postById)
