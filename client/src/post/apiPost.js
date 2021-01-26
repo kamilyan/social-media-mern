@@ -68,3 +68,31 @@ export const updatePost = (postId, token, post) => {
     })
     .catch((err) => console.error(err))
 }
+
+export const performLike = (postId, token) => {
+  return fetch(`${process.env.REACT_APP_API_URL}/api/posts/${postId}/like`, {
+    method: 'PUT',
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((res) => {
+      return res.json()
+    })
+    .catch((err) => console.error(err))
+}
+
+export const performUnlike = (postId, token) => {
+  return fetch(`${process.env.REACT_APP_API_URL}/api/posts/${postId}/unlike`, {
+    method: 'PUT',
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((res) => {
+      return res.json()
+    })
+    .catch((err) => console.error(err))
+}

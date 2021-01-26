@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { getPostById, removePost } from './apiPost'
+import { getPostById, removePost, performLike, performUnlike } from './apiPost'
 import DefaultPost from '../images/nature.jpg'
 import { Link, Redirect } from 'react-router-dom'
 import { isAuthenticated } from '../auth'
@@ -9,6 +9,9 @@ class SinglePost extends Component {
     post: '',
     loading: true,
     successDeleted: false,
+    like: false,
+    likes: 0,
+    successLike: false,
   }
 
   componentDidMount() {
@@ -17,7 +20,12 @@ class SinglePost extends Component {
       if (data.error) {
         console.log(data.error)
       } else {
-        this.setState({ post: data, loading: false })
+        this.setState({
+          post: data,
+          like: this.checkFoundLike(data.likes),
+          likes: data.likes.length,
+          loading: false,
+        })
       }
     })
   }
@@ -41,9 +49,38 @@ class SinglePost extends Component {
     }
   }
 
+  checkFoundLike = (likes) => {
+    const userId = isAuthenticated() && isAuthenticated().user._id
+    let found = likes.indexOf(userId) !== -1
+    return found
+  }
+
+  likeToggleHandler = () => {
+    if (!isAuthenticated()) {
+      this.setState({ successLike: true })
+      return false
+    }
+
+    let callApi = this.state.like ? performUnlike : performLike
+    const postId = this.state.post._id
+    const token = isAuthenticated().token
+    callApi(postId, token).then((data) => {
+      if (data.error) {
+        console.log(data.error)
+      } else {
+        this.setState({
+          like: !this.state.like,
+          likes: data.likes.length,
+        })
+      }
+    })
+  }
+
   renderPost = (post) => {
     const posterId = post.postedBy ? `users/${post.postedBy._id}` : ''
     const posterName = post.postedBy ? post.postedBy.name : ' Unknown'
+
+    const { like, likes } = this.state
 
     return (
       <div className='card-body'>
@@ -54,6 +91,25 @@ class SinglePost extends Component {
           className='img-thumbnail mb-3'
           style={{ height: '40vh', width: '100%', objectFit: 'cover' }}
         />
+
+        {like ? (
+          <h3 onClick={this.likeToggleHandler}>
+            <i
+              className='fa fa-thumbs-up text-success bg-dark'
+              style={{ padding: '10px', borderRadius: '50%' }}
+            />{' '}
+            {likes} like
+          </h3>
+        ) : (
+          <h3 onClick={this.likeToggleHandler}>
+            <i
+              className='fa fa-thumbs-up text-warning bg-dark'
+              style={{ padding: '10px', borderRadius: '50%' }}
+            />{' '}
+            {likes} like
+          </h3>
+        )}
+
         <p className='card-text'>{post.body}</p>
         <br />
         <p className='font-italic mark'>
@@ -86,10 +142,12 @@ class SinglePost extends Component {
   }
 
   render() {
-    const { post, loading, successDeleted } = this.state
+    const { post, loading, successDeleted, successLike } = this.state
 
     if (successDeleted) {
       return <Redirect to={'/'} />
+    } else if (successLike) {
+      return <Redirect to={'/signin'} />
     }
 
     return (

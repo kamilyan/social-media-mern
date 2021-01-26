@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { getPostById, updatePost } from './apiPost'
 import { isAuthenticated } from '../auth'
 import { Redirect } from 'react-router-dom'
+import DefaultPost from '../images/nature.jpg'
 
 class EditPost extends Component {
   constructor() {
@@ -12,7 +13,7 @@ class EditPost extends Component {
       body: '',
       error: false,
       fileSize: 0,
-      loading: false,
+      loading: true,
       success: false,
     }
   }
@@ -28,6 +29,7 @@ class EditPost extends Component {
           title: data.title,
           body: data.body,
           error: false,
+          loading: false,
         })
       }
     })
@@ -64,7 +66,6 @@ class EditPost extends Component {
   handleSubmit = (e) => {
     e.preventDefault()
     if (this.isValid()) {
-      this.setState({ loading: true })
       const postId = this.state.id
       const token = isAuthenticated().token
       updatePost(postId, token, this.postData).then((data) => {
@@ -86,51 +87,69 @@ class EditPost extends Component {
   }
 
   render() {
-    const { title, body, success } = this.state
+    const { title, body, success, id, error, loading } = this.state
     if (success) {
       return <Redirect to={`/users/${isAuthenticated().user._id}`} />
     }
-
     return (
       <div className='container'>
         <h2 className='mt-5 mb-5'>{title}</h2>
-        <form>
-          <div className='form-group'>
-            <label className='text-muted'>Post Photo</label>
-            <input
-              onChange={this.handleChange('photo')}
-              type='file'
-              accept='image/*'
-              className='form-control'
-            />
+        {error && <div className='alert alert-danger'>{error}</div>}
+        {loading ? (
+          <div className='jumbotron text-center'>
+            <h2>Loading...</h2>
           </div>
-          <div className='form-group'>
-            <label className='text-muted'>Title</label>
-            <input
-              onChange={this.handleChange('title')}
-              type='text'
-              className='form-control'
-              value={title}
-              autoComplete='off'
+        ) : (
+          <>
+            <img
+              style={{ height: '30vh', width: 'auto' }}
+              className='img-thumbnail'
+              src={`${
+                process.env.REACT_APP_API_URL
+              }/api/posts/${id}/photo?${new Date().getTime()}`}
+              onError={(e) => (e.target.src = `${DefaultPost}`)}
+              alt={title}
             />
-          </div>
-          <div className='form-group'>
-            <label className='text-muted'>Body</label>
-            <textarea
-              onChange={this.handleChange('body')}
-              type='text'
-              className='form-control'
-              value={body}
-              autoComplete='off'
-            />
-          </div>
 
-          <button
-            onClick={this.handleSubmit}
-            className='btn btn-raised btn-primary'>
-            Update Post
-          </button>
-        </form>
+            <form>
+              <div className='form-group'>
+                <label className='text-muted'>Post Photo</label>
+                <input
+                  onChange={this.handleChange('photo')}
+                  type='file'
+                  accept='image/*'
+                  className='form-control'
+                />
+              </div>
+              <div className='form-group'>
+                <label className='text-muted'>Title</label>
+                <input
+                  onChange={this.handleChange('title')}
+                  type='text'
+                  className='form-control'
+                  value={title}
+                  autoComplete='off'
+                />
+              </div>
+              <div className='form-group'>
+                <label className='text-muted'>Body</label>
+                <textarea
+                  onChange={this.handleChange('body')}
+                  type='text'
+                  className='form-control'
+                  value={body}
+                  autoComplete='off'
+                />
+              </div>
+
+              <button
+                onClick={this.handleSubmit}
+                className='btn btn-raised btn-primary'>
+                Update Post
+              </button>
+            </form>
+          </>
+        )}
       </div>
     )
   }
