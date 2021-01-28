@@ -1,0 +1,38 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "private": true,
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node server/app",
+    "backend": "nodemon server/app",
+    "frontend": "npm start --prefix client",
+    "dev": "concurrently \"npm run backend\" \"npm run frontend\"",
+    "postinstall": "npm install --prefix client",
+    "build": "npm run build --prefix client"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-jwt": "^6.0.0",
+    "express-validator": "^6.9.2",
+    "formidable": "^1.2.2",
+    "jsonwebtoken": "^8.5.1",
+    "loadash": "^1.0.0",
+    "lodash": "^4.17.20",
+    "mongoose": "^5.11.11",
+    "morgan": "^1.10.0",
+    "nodemailer": "^6.4.17",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "concurrently": "^5.3.0",
+    "nodemon": "^2.0.6"
+  }
+}
