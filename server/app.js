@@ -7,6 +7,7 @@ const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const fs = require('fs')
+const path = require('path')
 dotenv.config()
 
 // db
@@ -56,7 +57,7 @@ app.use(function (err, req, res, next) {
 })
 
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '/client/build')))
+  app.use(express.static(path.join(__dirname, '/../client/build')))
 
   app.get('*', (req, res) =>
     res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
