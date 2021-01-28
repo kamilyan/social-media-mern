@@ -24,8 +24,8 @@ class Signup extends Component {
     const user = { name, email, password }
 
     signup(user).then((data) => {
-      if (data.error) {
-        this.setState({ error: data.error })
+      if (data && data.error) {
+        this.setState({ error: data && data.error })
       } else {
         this.setState({
           error: '',

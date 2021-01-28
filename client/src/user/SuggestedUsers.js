@@ -19,7 +19,7 @@ class SuggestedUsers extends Component {
     const token = isAuthenticated().token
     const userId = isAuthenticated().user._id
     suggestedUsers(userId, token).then((data) => {
-      if (data.error) {
+      if (data && data.error) {
         console.log(data.error)
       } else {
         this.setState({ users: data })
@@ -31,7 +31,7 @@ class SuggestedUsers extends Component {
     const token = isAuthenticated().token
 
     follow(token, followUser._id).then((data) => {
-      if (data.error) {
+      if (data && data.error) {
         this.setState({ error: data.error })
       } else {
         let toFollow = this.state.users

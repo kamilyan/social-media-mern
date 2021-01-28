@@ -36,3 +36,18 @@ exports.userSignupValidator = [
     next()
   },
 ]
+
+exports.passwordResetValidator = [
+  body('newPassword')
+    .isLength({ min: 5 })
+    .withMessage('Password must contain at least 5 characters'),
+  (req, res, next) => {
+    // check for errors
+    const errorsValidation = validationResult(req)
+    // if error show the first one as they happen
+    if (errorsValidation.errors.length) {
+      return res.status(400).json({ error: errorsValidation.errors[0].msg })
+    }
+    next()
+  },
+]

@@ -22,7 +22,7 @@ class EditProfile extends Component {
   init = (userId) => {
     const token = isAuthenticated().token
     getUserProfile(userId, token).then((data) => {
-      if (data.error) {
+      if (data && data.error) {
         this.setState({ redirectToSignin: true })
       } else {
         this.setState({
@@ -84,8 +84,8 @@ class EditProfile extends Component {
 
       const token = isAuthenticated().token
       updateUser(id, token, this.userData, name).then((data) => {
-        if (data.error) {
-          this.setState({ error: data.error })
+        if (data && data.error) {
+          this.setState({ error: data && data.error })
         } else {
           this.setState({
             redirectToProfile: true,
@@ -106,7 +106,7 @@ class EditProfile extends Component {
       loading,
       about,
     } = this.state
-    
+
     if (redirectToProfile) {
       return <Redirect to={`/users/${id}`} />
     }

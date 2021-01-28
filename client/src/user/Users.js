@@ -12,7 +12,7 @@ class Users extends Component {
 
   componentDidMount() {
     getUsers().then((data) => {
-      if (data.error) {
+      if (data && data.error) {
         console.log(data.error)
       } else {
         this.setState({ users: data })

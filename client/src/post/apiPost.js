@@ -120,6 +120,7 @@ export const performUncomment = (postId, token, comment) => {
       method: 'PUT',
       headers: {
         Accept: 'application/json',
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({ comment }),

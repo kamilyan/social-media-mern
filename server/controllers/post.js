@@ -196,7 +196,7 @@ exports.performComment = (req, res, next) => {
 }
 
 exports.performUncomment = (req, res, next) => {
-  let comment = req.body.commment
+  let comment = req.body.comment
 
   Post.findByIdAndUpdate(
     req.post._id,

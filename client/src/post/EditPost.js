@@ -21,7 +21,7 @@ class EditPost extends Component {
   init = (postId) => {
     this.postData = new FormData()
     getPostById(postId).then((data) => {
-      if (data.error) {
+      if (data && data.error) {
         this.setState({ error: true })
       } else {
         this.setState({
@@ -69,7 +69,7 @@ class EditPost extends Component {
       const postId = this.state.id
       const token = isAuthenticated().token
       updatePost(postId, token, this.postData).then((data) => {
-        if (data.error) {
+        if (data && data.error) {
           this.setState({ error: data.error })
         } else {
           this.setState({
@@ -77,7 +77,6 @@ class EditPost extends Component {
             title: '',
             photo: '',
             body: '',
-            photo: '',
             error: false,
             success: true,
           })

@@ -19,7 +19,7 @@ class SinglePost extends Component {
   componentDidMount() {
     const postId = this.props.match.params.postId
     getPostById(postId).then((data) => {
-      if (data.error) {
+      if (data && data.error) {
         console.log(data.error)
       } else {
         this.setState({
@@ -27,6 +27,7 @@ class SinglePost extends Component {
           like: this.checkFoundLike(data.likes),
           likes: data.likes.length,
           loading: false,
+          comments: data.comments,
         })
       }
     })
@@ -36,7 +37,7 @@ class SinglePost extends Component {
     const postId = this.props.match.params.postId
     const token = isAuthenticated().token
     removePost(postId, token).then((data) => {
-      if (data.error) {
+      if (data && data.error) {
         console.log(data.error)
       } else {
         this.setState({ successDeleted: true })
@@ -71,7 +72,7 @@ class SinglePost extends Component {
     const postId = this.state.post._id
     const token = isAuthenticated().token
     callApi(postId, token).then((data) => {
-      if (data.error) {
+      if (data && data.error) {
         console.log(data.error)
       } else {
         this.setState({
@@ -83,7 +84,7 @@ class SinglePost extends Component {
   }
 
   renderPost = (post) => {
-    const posterId = post.postedBy ? `users/${post.postedBy._id}` : ''
+    const posterId = post.postedBy ? `/users/${post.postedBy._id}` : ''
     const posterName = post.postedBy ? post.postedBy.name : ' Unknown'
 
     const { like, likes } = this.state
@@ -125,7 +126,6 @@ class SinglePost extends Component {
           <Link to={`/`} className='btn btn-raised btn-sm btn-primary mr-5'>
             Back to posts
           </Link>
-          {console.log(post)}
           {isAuthenticated().user &&
             isAuthenticated().user._id === post.postedBy._id && (
               <>

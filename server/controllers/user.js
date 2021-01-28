@@ -40,80 +40,82 @@ exports.allUsers = (req, res) => {
 }
 
 exports.getUser = (req, res) => {
-  req.profile.hashed_password = undefined
-  req.profile.salt = undefined
-  return res.json(req.profile)
+  try {
+    req.profile.hashed_password = undefined
+    req.profile.salt = undefined
+    return res.json(req.profile)
+  } catch (e) {
+    console.error(e)
+    next(e)
+  }
 }
 
-/*
 exports.updateUser = (req, res, next) => {
-  let user = req.profile
-  user = _.extend(user, req.body)
-  user.updated = Date.now()
-  user.save((err) => {
-    if (err) {
-      return res.status(400).json({
-        error: 'Cannot updated',
+  try {
+    let form = new formidable.IncomingForm()
+
+    form.keepExtensions = true
+
+    form.parse(req, (err, fields, files) => {
+      if (err) {
+        return res.status(400).json({
+          error: 'Photo could not be uploaded',
+        })
+      }
+
+      let user = req.profile
+      user = _.extend(user, fields)
+      user.updated = Date.now()
+      if (files.photo) {
+        user.photo.data = fs.readFileSync(files.photo.path)
+        user.photo.contentType = files.photo.type
+      }
+      user.save((err) => {
+        if (err) {
+          return res.status(400).json({
+            error: err,
+          })
+        }
+        user.hashed_password = undefined
+        user.salt = undefined
+        res.json({ user })
       })
-    }
-    user.hashed_password = undefined
-    user.salt = undefined
-    res.json({ user })
-  })
+    })
+  } catch (e) {
+    console.error(e)
+    next(e)
+  }
 }
-*/
 
-exports.updateUser = (req, res, next) => {
-  let form = new formidable.IncomingForm()
-
-  form.keepExtensions = true
-
-  form.parse(req, (err, fields, files) => {
-    if (err) {
-      return res.status(400).json({
-        error: 'Photo could not be uploaded',
-      })
+exports.getUserPhoto = (req, res, next) => {
+  try {
+    if (req.profile.photo.data) {
+      res.set('Content-Type', req.profile.photo.contentType)
+      return res.send(req.profile.photo.data)
     }
+    next()
+  } catch (e) {
+    console.error(e)
+    next(e)
+  }
+}
 
+exports.deleteUser = (req, res, next) => {
+  try {
     let user = req.profile
-    user = _.extend(user, fields)
-    user.updated = Date.now()
-    if (files.photo) {
-      user.photo.data = fs.readFileSync(files.photo.path)
-      user.photo.contentType = files.photo.type
-    }
-    user.save((err) => {
+    user.remove((err, user) => {
       if (err) {
         return res.status(400).json({
           error: err,
         })
       }
-      user.hashed_password = undefined
-      user.salt = undefined
-      res.json({ user })
+
+      res.json({ message: 'User deleted!' })
     })
-  })
-}
-
-exports.getUserPhoto = (req, res, next) => {
-  if (req.profile.photo.data) {
-    res.set('Content-Type', req.profile.photo.contentType)
-    return res.send(req.profile.photo.data)
+  } catch (e) {
+    console.error(e)
+    next(e)
   }
-  next()
-}
-
-exports.deleteUser = (req, res, next) => {
-  let user = req.profile
-  user.remove((err, user) => {
-    if (err) {
-      return res.status(400).json({
-        error: err,
-      })
-    }
-
-    res.json({ message: 'User deleted!' })
-  })
 }
 
 exports.addFollowing = (req, res, next) => {
@@ -187,13 +189,21 @@ exports.removeFollower = (req, res) => {
 }
 
 exports.suggestedUsers = (req, res) => {
-  let following = req.profile.following
-  User.find({ _id: { $nin: [...following, req.profile_id] } }, (err, users) => {
-    if (err) {
-      return res.status(400).json({
-        error: err,
-      })
-    }
-    res.json(users)
-  }).select('name')
+  try {
+    let following = req.profile.following
+    User.find(
+      { _id: { $nin: [...following, req.profile_id] } },
+      (err, users) => {
+        if (err) {
+          return res.status(400).json({
+            error: err,
+          })
+        }
+        res.json(users)
+      }
+    ).select('name')
+  } catch (e) {
+    console.error(e)
+    next(e)
+  }
 }

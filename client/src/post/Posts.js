@@ -13,7 +13,7 @@ class Posts extends Component {
 
   componentDidMount() {
     getPosts().then((data) => {
-      if (data.error) {
+      if (data && data.error) {
         console.log(data.error)
       } else {
         this.setState({ posts: data, loading: false })

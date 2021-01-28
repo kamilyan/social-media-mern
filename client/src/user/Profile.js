@@ -33,8 +33,8 @@ class Profile extends Component {
     const token = isAuthenticated().token
 
     callApi(token, this.state.user._id).then((data) => {
-      if (data.error) {
-        this.setState({ error: data.error })
+      if (data && data.error) {
+        this.setState({ error: data && data.error })
       } else {
         this.setState({ user: data, following: !this.state.following })
       }
@@ -44,7 +44,7 @@ class Profile extends Component {
   init = (userId) => {
     const token = isAuthenticated().token
     getUserProfile(userId, token).then((data) => {
-      if (data.error) {
+      if (data && data.error) {
         this.setState({ redirectToSignin: true })
       } else {
         let following = this.checkFollow(data)
@@ -57,7 +57,7 @@ class Profile extends Component {
   loadPosts = (userId) => {
     const token = isAuthenticated().token
     getPostsByUser(userId, token).then((data) => {
-      if (data.error) {
+      if (data && data.error) {
         console.log(data.error)
       } else {
         this.setState({ posts: data })

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { Redirect } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import { signin, authenticate } from '../auth'
+import SocialLogin from './SocialLogin'
 
 class Signin extends Component {
   constructor() {
@@ -26,7 +27,7 @@ class Signin extends Component {
     const user = { email, password }
 
     signin(user).then((data) => {
-      if (data.error) {
+      if (data && data.error) {
         this.setState({ error: data.error, loading: false })
       } else {
         authenticate(data, () => {
@@ -46,7 +47,9 @@ class Signin extends Component {
     return (
       <div className='container'>
         <h2 className='mt-5 mb-5'>SignIn</h2>
-
+        <hr />
+        <SocialLogin />
+        <hr />
         {error && <div className='alert alert-danger'>{error}</div>}
         {loading && (
           <div className='jumbotron text-center'>
@@ -79,6 +82,12 @@ class Signin extends Component {
             Submit
           </button>
         </form>
+        <p>
+          <Link to='/forgot-password' className='btn btn-raised btn-danger'>
+            {' '}
+            Forgot Password
+          </Link>
+        </p>
       </div>
     )
   }

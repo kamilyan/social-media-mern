@@ -13,7 +13,7 @@ class ProfileTabs extends Component {
             <hr />
             {followers.map((person, i) => (
               <div key={i}>
-                <Link to={`users/$person._id`}>
+                <Link to={`/users/${person._id}`}>
                   <img
                     style={{ borderRadius: '50%', border: '1px solid black' }}
                     className='float-left mr-2'
