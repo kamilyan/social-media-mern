@@ -25,14 +25,14 @@ class Posts extends Component {
     return (
       <div className='row'>
         {posts.map((post, i) => {
-          const posterId = post.postedBy ? `users/${post.postedBy._id}` : ''
+          const posterId = post.postedBy ? `/users/${post.postedBy._id}` : ''
           const posterName = post.postedBy ? post.postedBy.name : ' Unknown'
 
           return (
             <div className='card col-md-4' key={i}>
               <div className='card-body'>
                 <img
-                  src={`${process.env.REACT_APP_API_URL}/api/posts/${post._id}/photo`}
+                  src={`/api/posts/${post._id}/photo`}
                   alt={post.title}
                   onError={(i) => (i.target.src = DefaultPost)}
                   className='img-thumbnail mb-3'

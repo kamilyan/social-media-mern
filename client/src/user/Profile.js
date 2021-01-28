@@ -81,9 +81,7 @@ class Profile extends Component {
     const { redirectToSignin, user, loading, posts } = this.state
     if (redirectToSignin) return <Redirect to='/signin' />
     const photoUrl = user._id
-      ? `${process.env.REACT_APP_API_URL}/api/users/${
-          user._id
-        }/photo?${new Date().getTime()}`
+      ? `/api/users/${user._id}/photo?${new Date().getTime()}`
       : DefaultAvatar
     return (
       <div className='container'>

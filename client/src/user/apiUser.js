@@ -1,5 +1,5 @@
 export const getUserProfile = (userId, token) => {
-  return fetch(`${process.env.REACT_APP_API_URL}/api/users/${userId}`, {
+  return fetch(`/api/users/${userId}`, {
     method: 'GET',
     headers: {
       Accept: 'application/json',
@@ -12,7 +12,7 @@ export const getUserProfile = (userId, token) => {
 }
 
 export const updateUser = (userId, token, user, name) => {
-  return fetch(`${process.env.REACT_APP_API_URL}/api/users/${userId}`, {
+  return fetch(`/api/users/${userId}`, {
     method: 'PUT',
     headers: {
       Accept: 'application/json',
@@ -33,7 +33,7 @@ export const updateUser = (userId, token, user, name) => {
 }
 
 export const removeUser = (userId, token) => {
-  return fetch(`${process.env.REACT_APP_API_URL}/api/users/${userId}`, {
+  return fetch(`/api/users/${userId}`, {
     method: 'DELETE',
     headers: {
       Accept: 'application/json',
@@ -46,7 +46,7 @@ export const removeUser = (userId, token) => {
 }
 
 export const getUsers = () => {
-  return fetch(`${process.env.REACT_APP_API_URL}/api/users`, {
+  return fetch(`/api/users`, {
     method: 'GET',
   })
     .then((res) => res.json())
@@ -54,16 +54,13 @@ export const getUsers = () => {
 }
 
 export const follow = (token, followId) => {
-  return fetch(
-    `${process.env.REACT_APP_API_URL}/api/users/${followId}/follow`,
-    {
-      method: 'PUT',
-      headers: {
-        Accept: 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  )
+  return fetch(`/api/users/${followId}/follow`, {
+    method: 'PUT',
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  })
     .then((res) => {
       return res.json()
     })
@@ -71,16 +68,13 @@ export const follow = (token, followId) => {
 }
 
 export const unfollow = (token, unfollowId) => {
-  return fetch(
-    `${process.env.REACT_APP_API_URL}/api/users/${unfollowId}/unfollow`,
-    {
-      method: 'PUT',
-      headers: {
-        Accept: 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  )
+  return fetch(`/api/users/${unfollowId}/unfollow`, {
+    method: 'PUT',
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  })
     .then((res) => {
       return res.json()
     })
@@ -88,16 +82,13 @@ export const unfollow = (token, unfollowId) => {
 }
 
 export const suggestedUsers = (userId, token) => {
-  return fetch(
-    `${process.env.REACT_APP_API_URL}/api/users/${userId}/suggestedUsers`,
-    {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  )
+  return fetch(`/api/users/${userId}/suggestedUsers`, {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  })
     .then((res) => {
       return res.json()
     })

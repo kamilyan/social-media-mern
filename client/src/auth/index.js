@@ -1,5 +1,5 @@
 export const signup = (user) => {
-  return fetch(`${process.env.REACT_APP_API_URL}/api/signup`, {
+  return fetch(`/api/signup`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',
@@ -14,7 +14,7 @@ export const signup = (user) => {
 }
 
 export const signin = (user) => {
-  return fetch(`${process.env.REACT_APP_API_URL}/api/signin`, {
+  return fetch(`/api/signin`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',
@@ -40,7 +40,7 @@ export const signout = (next) => {
     localStorage.removeItem('jwt')
   }
   next()
-  return fetch(`${process.env.REACT_APP_API_URL}/api/signout`, {
+  return fetch(`/api/signout`, {
     method: 'GET',
   })
     .then((res) => {
@@ -62,7 +62,7 @@ export const isAuthenticated = () => {
 }
 
 export const forgotPassword = (email) => {
-  return fetch(`${process.env.REACT_APP_API_URL}/api/forgot-password/`, {
+  return fetch(`/api/forgot-password/`, {
     method: 'PUT',
     headers: {
       Accept: 'application/json',
@@ -77,7 +77,7 @@ export const forgotPassword = (email) => {
 }
 
 export const resetPassword = (resetInfo) => {
-  return fetch(`${process.env.REACT_APP_API_URL}/api/reset-password/`, {
+  return fetch(`/api/reset-password/`, {
     method: 'PUT',
     headers: {
       Accept: 'application/json',
@@ -93,7 +93,7 @@ export const resetPassword = (resetInfo) => {
 }
 
 export const socialLogin = (user) => {
-  return fetch(`${process.env.REACT_APP_API_URL}/api/social-login`, {
+  return fetch(`/api/social-login`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',

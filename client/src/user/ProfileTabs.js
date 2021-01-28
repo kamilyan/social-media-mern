@@ -19,7 +19,7 @@ class ProfileTabs extends Component {
                     className='float-left mr-2'
                     height='30px'
                     width='30px'
-                    src={`${process.REACT_APP_API_URL}/api/users/${person._id}/photo`}
+                    src={`/api/users/${person._id}/photo`}
                     alt={person.name}
                     onError={(e) => (e.target.src = `${DefaultAvatar}`)}
                   />
@@ -41,7 +41,7 @@ class ProfileTabs extends Component {
                     className='float-left mr-2'
                     height='30px'
                     width='30px'
-                    src={`${process.REACT_APP_API_URL}/api/users/${person._id}/photo`}
+                    src={`/api/users/${person._id}/photo`}
                     alt={person.name}
                     onError={(e) => (e.target.src = `${DefaultAvatar}`)}
                   />

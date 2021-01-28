@@ -99,7 +99,7 @@ class Comment extends Component {
                   className='float-left mr-2'
                   height='30px'
                   width='30px'
-                  src={`${process.REACT_APP_API_URL}/api/users/${comment.postedBy._id}/photo`}
+                  src={`/api/users/${comment.postedBy._id}/photo`}
                   alt={comment.postedBy.name}
                   onError={(e) => (e.target.src = `${DefaultAvatar}`)}
                 />

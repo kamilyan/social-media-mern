@@ -86,8 +86,8 @@ exports.forgotPassword = (req, res) => {
       from: process.env.MY_EMAIL,
       to: email,
       subject: 'Password Reset Instructions',
-      text: `Please use the following link to reset your password: ${process.env.CLIENT_URL}/reset-password/${token}`,
-      html: `<p>Please use the following link to reset your password:</p> <p>${process.env.CLIENT_URL}/reset-password/${token}</p>`,
+      text: `Please use the following link to reset your password: https://social-media-mern-project.herokuapp.com/reset-password/${token}`,
+      html: `<p>Please use the following link to reset your password:</p> <p>https://social-media-mern-project.herokuapp.com/reset-password/${token}</p>`,
     }
 
     return user.updateOne({ resetPasswordLink: token }, (err, success) => {
