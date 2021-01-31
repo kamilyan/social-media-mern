@@ -124,10 +124,31 @@ class Profile extends Component {
                     <DeleteUser userId={user._id} />
                   </div>
                 ) : (
-                  <FollowProfileButton
-                    following={this.state.following}
-                    onButtonClick={this.clickFollowButton}
-                  />
+                  <>
+                    <FollowProfileButton
+                      following={this.state.following}
+                      onButtonClick={this.clickFollowButton}
+                    />
+                    <div>
+                      {isAuthenticated().user &&
+                        isAuthenticated().user.role === 'admin' && (
+                          <div class='card mt-5'>
+                            <div className='card-body'>
+                              <h5 className='card-title'>Admin</h5>
+                              <p className='mb-2 text-danger'>
+                                Edit/Delete as an Admin
+                              </p>
+                              <Link
+                                className='btn btn-raised btn-success mr-5'
+                                to={`/users/${user._id}/edit`}>
+                                Edit Profile
+                              </Link>
+                              <DeleteUser userId={user._id} />
+                            </div>
+                          </div>
+                        )}
+                    </div>
+                  </>
                 )}
               </div>
             </div>

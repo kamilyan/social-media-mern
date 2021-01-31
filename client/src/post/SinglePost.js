@@ -165,7 +165,32 @@ class SinglePost extends Component {
             <h2>Loading...</h2>
           </div>
         ) : (
-          this.renderPost(post)
+          <>
+            {this.renderPost(post)}
+            <div>
+              {isAuthenticated().user &&
+                isAuthenticated().user.role === 'admin' && (
+                  <div class='card mt-5'>
+                    <div className='card-body'>
+                      <h5 className='card-title'>Admin</h5>
+                      <p className='mb-2 text-danger'>
+                        Edit/Delete as an Admin
+                      </p>
+                      <Link
+                        to={`/posts/${post._id}/edit`}
+                        className='btn btn-raised btn-warning btn-sm mr-5'>
+                        Update Post
+                      </Link>
+                      <button
+                        onClick={this.deleteConfirmed}
+                        className='btn btn-raised btn-danger'>
+                        Delete Post
+                      </button>
+                    </div>
+                  </div>
+                )}
+            </div>
+          </>
         )}
 
         <Comment

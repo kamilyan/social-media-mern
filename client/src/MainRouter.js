@@ -14,6 +14,7 @@ import EditPost from './post/EditPost'
 import PrivateRoute from './auth/PrivateRoute'
 import ForgotPassword from './user/ForgotPassword'
 import ResetPassword from './user/ResetPassword'
+import Admin from './admin/Admin'
 
 const MainRouter = () => {
   return (
@@ -40,6 +41,7 @@ const MainRouter = () => {
         <PrivateRoute exact path='/suggestedUsers' component={SuggestedUsers} />
         <PrivateRoute exact path='/users/:userId' component={Profile} />
         <PrivateRoute exact path='/createPost' component={CreatePost} />
+        <PrivateRoute exact path='/admin' component={Admin} />
       </Switch>
     </div>
   )

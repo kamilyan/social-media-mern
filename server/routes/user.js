@@ -22,10 +22,16 @@ router.put(
 )
 
 router.get('/:userId', authController.requireSignin, userController.getUser)
-router.put('/:userId', authController.requireSignin, userController.updateUser)
+router.put(
+  '/:userId',
+  authController.requireSignin,
+  userController.hasAuthorization,
+  userController.updateUser
+)
 router.delete(
   '/:userId',
   authController.requireSignin,
+  userController.hasAuthorization,
   userController.deleteUser
 )
 

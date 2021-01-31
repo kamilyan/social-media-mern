@@ -11,7 +11,7 @@ export const getUserProfile = (userId, token) => {
     .catch((err) => console.error(err))
 }
 
-export const updateUser = (userId, token, user, name) => {
+export const updateUser = (userId, token, user, updateNavName) => {
   return fetch(`/api/users/${userId}`, {
     method: 'PUT',
     headers: {
@@ -22,9 +22,9 @@ export const updateUser = (userId, token, user, name) => {
   })
     .then((res) => {
       //update user in localstorage.
-      if (typeof window !== 'undefined') {
+      if (typeof window !== 'undefined' && updateNavName != undefined) {
         let auth = JSON.parse(localStorage.getItem('jwt'))
-        auth.user.name = name
+        auth.user.name = updateNavName
         localStorage.setItem('jwt', JSON.stringify(auth))
       }
       return res.json()

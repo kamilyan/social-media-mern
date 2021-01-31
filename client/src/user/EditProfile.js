@@ -80,10 +80,16 @@ class EditProfile extends Component {
     if (this.isValid()) {
       this.setState({ loading: true })
 
-      const { id, name } = this.state
+      let { id, name: updateNavName } = this.state
 
+      if (
+        isAuthenticated().user._id != id &&
+        isAuthenticated().user.role == 'admin'
+      ) {
+        updateNavName = undefined
+      }
       const token = isAuthenticated().token
-      updateUser(id, token, this.userData, name).then((data) => {
+      updateUser(id, token, this.userData, updateNavName).then((data) => {
         if (data && data.error) {
           this.setState({ error: data && data.error })
         } else {
@@ -112,9 +118,7 @@ class EditProfile extends Component {
     }
 
     const photoUrl = id
-      ? `${
-          process.env.REACT_APP_API_URL
-        }/api/users/${id}/photo?${new Date().getTime()}`
+      ? `/api/users/${id}/photo?${new Date().getTime()}`
       : DefaultAvatar
 
     return (

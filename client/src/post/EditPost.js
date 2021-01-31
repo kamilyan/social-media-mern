@@ -103,9 +103,7 @@ class EditPost extends Component {
             <img
               style={{ height: '30vh', width: 'auto' }}
               className='img-thumbnail'
-              src={`${
-                process.env.REACT_APP_API_URL
-              }/api/posts/${id}/photo?${new Date().getTime()}`}
+              src={`/api/posts/${id}/photo?${new Date().getTime()}`}
               onError={(e) => (e.target.src = `${DefaultPost}`)}
               alt={title}
             />
