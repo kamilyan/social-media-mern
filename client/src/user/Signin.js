@@ -103,6 +103,7 @@ class Signin extends Component {
               onChange={this.handleChange('password')}
               type='password'
               className='form-control'
+              autoComplete='off'
               value={password}
             />
           </div>

@@ -16,7 +16,7 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() => console.log('DB Connected'))
-
+mongoose.set('useFindAndModify', false)
 mongoose.connection.on('error', (err) => {
   console.log(`DB connection error: ${err.message}`)
 })
