@@ -12,6 +12,7 @@ class Signin extends Component {
       error: '',
       success: false,
       loading: false,
+      recaptcha: false,
     }
   }
 
@@ -25,20 +26,49 @@ class Signin extends Component {
     this.setState({ loading: true })
     const { email, password } = this.state
     const user = { email, password }
+    if (this.state.recaptcha) {
+      signin(user).then((data) => {
+        if (data && data.error) {
+          this.setState({ error: data.error, loading: false })
+        } else {
+          authenticate(data, () => {
+            this.setState({ success: true })
+          })
+        }
+      })
+    } else {
+      this.setState({
+        loading: false,
+        error: 'What day is today? Please write a correct answer!',
+      })
+    }
+  }
 
-    signin(user).then((data) => {
-      if (data && data.error) {
-        this.setState({ error: data.error, loading: false })
-      } else {
-        authenticate(data, () => {
-          this.setState({ success: true })
-        })
-      }
-    })
+  recaptchaHandler = (e) => {
+    this.setState({ error: '' })
+    let userDay = e.target.value.toLowerCase()
+    var days = [
+      'sunday',
+      'monday',
+      'tuesday',
+      'wednesday',
+      'thursday',
+      'friday',
+      'saturday',
+    ]
+    if (userDay === days[new Date().getDay()]) {
+      this.setState({ recaptcha: true })
+      return true
+    } else {
+      this.setState({
+        recaptcha: false,
+      })
+      return false
+    }
   }
 
   render() {
-    const { email, password, error, success, loading } = this.state
+    const { email, password, error, success, loading, recaptcha } = this.state
 
     if (success) {
       return <Redirect to='/' />
@@ -74,6 +104,17 @@ class Signin extends Component {
               type='password'
               className='form-control'
               value={password}
+            />
+          </div>
+          <div className='form-group'>
+            <label className='text-muted'>
+              {recaptcha ? 'Thanks. You got it!' : 'What day is today?'}
+            </label>
+
+            <input
+              onChange={this.recaptchaHandler}
+              type='text'
+              className='form-control'
             />
           </div>
           <button
