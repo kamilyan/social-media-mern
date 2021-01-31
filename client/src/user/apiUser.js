@@ -22,7 +22,7 @@ export const updateUser = (userId, token, user, updateNavName) => {
   })
     .then((res) => {
       //update user in localstorage.
-      if (typeof window !== 'undefined' && updateNavName != undefined) {
+      if (typeof window !== 'undefined' && updateNavName !== undefined) {
         let auth = JSON.parse(localStorage.getItem('jwt'))
         auth.user.name = updateNavName
         localStorage.setItem('jwt', JSON.stringify(auth))

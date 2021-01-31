@@ -19,17 +19,31 @@ exports.postById = (req, res, next, id) => {
     })
 }
 
-exports.getPosts = (req, res) => {
-  Post.find()
-    .populate('postedBy', '_id name')
-    .select('_id title body created likes')
-    .populate('comments')
-    .populate('comments.postedBy', '_id name')
-    .sort({ created: -1 })
+exports.getPosts = async (req, res) => {
+  // get current page from req.query or use default value of 1
+  const currentPage = req.query.page || 1
+  // return 3 posts per page
+  const perPage = 3
+  let totalItems
+
+  const posts = await Post.find()
+    // countDocuments() gives you total count of posts
+    .countDocuments()
+    .then((count) => {
+      totalItems = count
+      return Post.find()
+        .skip((currentPage - 1) * perPage)
+        .populate('comments')
+        .populate('comments.postedBy', '_id name')
+        .populate('postedBy', '_id name')
+        .sort({ created: -1 })
+        .limit(perPage)
+        .select('_id title body created likes')
+    })
     .then((posts) => {
       res.status(200).json(posts)
     })
-    .catch((err) => console.error(err))
+    .catch((err) => console.log(err))
 }
 
 exports.createPost = (req, res, next) => {

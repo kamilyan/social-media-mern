@@ -83,8 +83,8 @@ class EditProfile extends Component {
       let { id, name: updateNavName } = this.state
 
       if (
-        isAuthenticated().user._id != id &&
-        isAuthenticated().user.role == 'admin'
+        isAuthenticated().user._id !== id &&
+        isAuthenticated().user.role === 'admin'
       ) {
         updateNavName = undefined
       }

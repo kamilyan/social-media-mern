@@ -8,17 +8,37 @@ class Posts extends Component {
     this.state = {
       posts: [],
       loading: true,
+      page: 1,
     }
+  }
+  loadMore = (number) => {
+    this.setState({ ...this.state, page: this.state.page + number })
+  }
+
+  loadLess = (number) => {
+    this.setState({ ...this.state, page: this.state.page - number })
   }
 
   componentDidMount() {
-    getPosts().then((data) => {
+    getPosts(this.state.page).then((data) => {
       if (data && data.error) {
         console.log(data.error)
       } else {
-        this.setState({ posts: data, loading: false })
+        this.setState({ posts: data, loading: false, page: this.state.page })
       }
     })
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.page !== prevState.page) {
+      getPosts(this.state.page).then((data) => {
+        if (data && data.error) {
+          console.log(data.error)
+        } else {
+          this.setState({ posts: data, loading: false, page: this.state.page })
+        }
+      })
+    }
   }
 
   renderPosts = (posts) => {
@@ -59,7 +79,7 @@ class Posts extends Component {
   }
 
   render() {
-    const { posts, loading } = this.state
+    const { posts, loading, page } = this.state
     return (
       <div className='container'>
         {loading ? (
@@ -71,6 +91,25 @@ class Posts extends Component {
             <h2 className='mt-5 mb-5'>Recent Posts</h2>
             {this.renderPosts(posts)}
           </>
+        )}
+        {page > 1 ? (
+          <button
+            className='btn btn-raised btn-warning mr-5 mt-5 mb-5'
+            onClick={() => this.loadLess(1)}>
+            Previous ({this.state.page - 1})
+          </button>
+        ) : (
+          ''
+        )}
+
+        {posts.length ? (
+          <button
+            className='btn btn-raised btn-success mt-5 mb-5'
+            onClick={() => this.loadMore(1)}>
+            Next ({page + 1})
+          </button>
+        ) : (
+          ''
         )}
       </div>
     )

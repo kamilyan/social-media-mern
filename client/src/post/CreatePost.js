@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { isAuthenticated } from '../auth'
 import { createPost } from './apiPost'
 import { Redirect } from 'react-router-dom'
-import DefaultAvatar from '../images/avatar.png'
 
 class CreatePost extends Component {
   constructor() {
@@ -72,15 +71,7 @@ class CreatePost extends Component {
   }
 
   render() {
-    const {
-      title,
-      body,
-      photo,
-      user,
-      error,
-      loading,
-      redirectToProfile,
-    } = this.state
+    const { title, body, user, error, loading, redirectToProfile } = this.state
 
     if (redirectToProfile) {
       return <Redirect to={`/users/${user._id}`} />

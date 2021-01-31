@@ -13,8 +13,8 @@ export const createPost = (userId, token, post) => {
     .catch((err) => console.error(err))
 }
 
-export const getPosts = () => {
-  return fetch(`/api/posts`, {
+export const getPosts = (page) => {
+  return fetch(`/api/posts/?page=${page}`, {
     method: 'GET',
   })
     .then((res) => res.json())
