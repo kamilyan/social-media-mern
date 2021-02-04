@@ -81,11 +81,7 @@ class Signin extends Component {
         <SocialLogin />
         <hr />
         {error && <div className='alert alert-danger'>{error}</div>}
-        {loading && (
-          <div className='jumbotron text-center'>
-            <h2>Loading...</h2>
-          </div>
-        )}
+        {loading && <div class='loader'></div>}
 
         <form>
           <div className='form-group'>

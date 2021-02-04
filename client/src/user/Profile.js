@@ -87,9 +87,7 @@ class Profile extends Component {
       <div className='container'>
         <h2 className='mt-5 mb-5'>Profile</h2>
         {loading ? (
-          <div className='jumbotron text-center'>
-            <h2>Loading...</h2>
-          </div>
+          <div class='loader'></div>
         ) : (
           <>
             <div className='row'>

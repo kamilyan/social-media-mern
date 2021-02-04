@@ -11,6 +11,7 @@ class SuggestedUsers extends Component {
       users: [],
       error: false,
       success: false,
+      loading: true,
       followMsg: '',
     }
   }
@@ -22,7 +23,7 @@ class SuggestedUsers extends Component {
       if (data && data.error) {
         console.log(data.error)
       } else {
-        this.setState({ users: data })
+        this.setState({ users: data, loading: false })
       }
     })
   }
@@ -76,16 +77,22 @@ class SuggestedUsers extends Component {
   )
 
   render() {
-    const { users, success, followMsg } = this.state
+    const { users, success, followMsg, loading } = this.state
     return (
       <div className='container'>
         <h2 className='mt-5 mb-5'>Suggested Accounts</h2>
-        {success && (
-          <div className='alert alert-success'>
-            <p>{followMsg}</p>
-          </div>
+        {loading ? (
+          <div class='loader'></div>
+        ) : (
+          <>
+            {success && (
+              <div className='alert alert-success'>
+                <p>{followMsg}</p>
+              </div>
+            )}
+            {this.renderUsers(users)}
+          </>
         )}
-        {this.renderUsers(users)}
       </div>
     )
   }

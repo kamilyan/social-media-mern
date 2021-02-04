@@ -83,9 +83,7 @@ class Posts extends Component {
     return (
       <div className='container'>
         {loading ? (
-          <div className='jumbotron text-center'>
-            <h2>Loading...</h2>
-          </div>
+          <div class='loader'></div>
         ) : (
           <>
             <h2 className='mt-5 mb-5'>Recent Posts</h2>

@@ -95,9 +95,7 @@ class EditPost extends Component {
         <h2 className='mt-5 mb-5'>{title}</h2>
         {error && <div className='alert alert-danger'>{error}</div>}
         {loading ? (
-          <div className='jumbotron text-center'>
-            <h2>Loading...</h2>
-          </div>
+          <div class='loader'></div>
         ) : (
           <>
             <img

@@ -7,6 +7,7 @@ class Users extends Component {
     super()
     this.state = {
       users: [],
+      loading: true,
     }
   }
 
@@ -15,7 +16,7 @@ class Users extends Component {
       if (data && data.error) {
         console.log(data.error)
       } else {
-        this.setState({ users: data })
+        this.setState({ users: data, loading: false })
       }
     })
   }
@@ -46,11 +47,11 @@ class Users extends Component {
   )
 
   render() {
-    const { users } = this.state
+    const { users, loading } = this.state
     return (
       <div className='container'>
         <h2 className='mt-5 mb-5'>Users</h2>
-        {this.renderUsers(users)}
+        {loading ? <div class='loader'></div> : <>{this.renderUsers(users)}</>}
       </div>
     )
   }

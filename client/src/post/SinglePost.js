@@ -96,7 +96,7 @@ class SinglePost extends Component {
           alt={post.title}
           onError={(i) => (i.target.src = DefaultPost)}
           className='img-thumbnail mb-3'
-          style={{ height: '40vh', width: '100%', objectFit: 'cover' }}
+          style={{ height: '40vh', width: '100%', objectFit: 'contain' }}
         />
 
         {like ? (
@@ -161,9 +161,7 @@ class SinglePost extends Component {
       <div className='container'>
         <h2 className='display-2 mt-5 mb-5'>{post.title}</h2>
         {loading ? (
-          <div className='jumbotron text-center'>
-            <h2>Loading...</h2>
-          </div>
+          <div class='loader'></div>
         ) : (
           <>
             {this.renderPost(post)}
@@ -190,14 +188,13 @@ class SinglePost extends Component {
                   </div>
                 )}
             </div>
+            <Comment
+              postId={post._id}
+              comments={comments}
+              onUpdateComments={this.updateComments}
+            />
           </>
         )}
-
-        <Comment
-          postId={post._id}
-          comments={comments}
-          onUpdateComments={this.updateComments}
-        />
       </div>
     )
   }

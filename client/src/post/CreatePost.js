@@ -81,11 +81,7 @@ class CreatePost extends Component {
       <div className='container'>
         <h2 className='mt-5 mb-5'>Create a new post</h2>
         {error && <div className='alert alert-danger'>{error}</div>}
-        {loading && (
-          <div className='jumbotron text-center'>
-            <h2>Loading...</h2>
-          </div>
-        )}
+        {loading && <div class='loader'></div>}
 
         <form>
           <div className='form-group'>
